@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
+  useMemo,
   useCallback,
   createContext,
   useContext,
@@ -18,34 +19,29 @@ const AppContext = createContext('');
 const AppProvider: FunctionComponent<any> = () => {
   const [usersList, setUsersList] = useState([]);
 
-  const getUsers = useCallback(
-    () => async () => {
-      console.log('functin created');
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-      // waits until the request completes...
-      if (!response.ok) {
-        const message = `An error has occured: ${response.status}`;
-        throw new Error(message);
-      }
+  const getUsers = async () => {
+    console.log('functin created');
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    // waits until the request completes...
+    if (!response.ok) {
+      const message = `An error has occured: ${response.status}`;
+      throw new Error(message);
+    }
 
-      const users = await response.json();
-
-      console.log(users);
-      setUsersList(users);
-    },
-    []
-  );
-
-  const value = {
-    getUsers,
-    users: usersList,
-    user: {
-      name: 'Rob',
-      age: 36,
-    },
+    const users = await response.json();
+    setUsersList(users);
   };
+
+  const value = useMemo(() => {
+    return {
+      getUsers,
+      users: usersList,
+      user: {
+        name: 'Rob',
+        age: 36,
+      },
+    };
+  }, [usersList]);
 
   return (
     <AppContext.Provider value={value}>
