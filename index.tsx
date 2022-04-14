@@ -1,31 +1,20 @@
-import React, { Component } from 'react';
+// import { StrictMode } from "react";
+// import { createRoot } from "react-dom/client";
+
+// import { AppProvider } from "./AppProvider";
+
+// const rootElement = document.getElementById("root");
+// const root = createRoot(rootElement);
+
+// root.render(
+//   <StrictMode>
+//     <AppProvider />
+//   </StrictMode>
+// );
+
+import React from 'react';
 import { render } from 'react-dom';
-import Hello from './Hello';
-import './style.css';
 
-interface AppProps { }
-interface AppState {
-  name: string;
-}
+import { AppProvider } from './AppProvider';
 
-class App extends Component<AppProps, AppState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'React'
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <Hello name={this.state.name} />
-        <p>
-          Start editing to see some magic happen :)
-        </p>
-      </div>
-    );
-  }
-}
-
-render(<App />, document.getElementById('root'));
+render(<AppProvider />, document.querySelector('#root'));
