@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
+  useCallback,
   createContext,
   useContext,
 } from 'react';
@@ -17,19 +18,25 @@ const AppContext = createContext('');
 const AppProvider: FunctionComponent<any> = () => {
   const [usersList, setUsersList] = useState([]);
 
-  const getUsers = async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    // waits until the request completes...
-    if (!response.ok) {
-      const message = `An error has occured: ${response.status}`;
-      throw new Error(message);
-    }
+  const getUsers = useCallback(
+    () => async () => {
+      console.log('functin created');
+      const response = await fetch(
+        'https://jsonplaceholder.typicode.com/users'
+      );
+      // waits until the request completes...
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`;
+        throw new Error(message);
+      }
 
-    const users = await response.json();
+      const users = await response.json();
 
-    console.log(users);
-    setUsersList(users);
-  };
+      console.log(users);
+      setUsersList(users);
+    },
+    []
+  );
 
   const value = {
     getUsers,

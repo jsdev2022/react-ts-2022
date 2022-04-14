@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent, useState, useEffect } from 'react';
 import { useAppState } from './AppProvider';
 import Hello from './Hello';
 import UserProfile from './UserProfile';
-import './styles.css';
+import './styles/style.css';
 
 interface AppState {
   // name: string;
@@ -42,7 +42,7 @@ const App: FunctionComponent<AppState> = () => {
           </section>
           <Hello name={name} />
           {users.map((item) => (
-            <p> {item.name} </p>
+            <p key={item.id}> {item.name} </p>
           ))}
         </div>
       )}
